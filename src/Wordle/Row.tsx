@@ -28,7 +28,7 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 							animate={{
 								scale: e !== "" ? [1, 1.03, 1] : 1,
 								scaleY: results[rowkey] ? (done ? [1, -1] : 1) : 1,
-								borderWidth: done ? "0px" : "2px",
+								borderWidth: done ? ["2px", "0px"] : "2px",
 								borderColor: done
 									? ""
 									: e !== ""
@@ -50,8 +50,11 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 								},
 								borderWidth: {
 									delay: done ? ind * 0.5 : 0,
-									duration: 1,
-									ease: "easeInOut",
+									duration: 0.09,
+									ease: "linear",
+									type: "spring",
+									damping: 40,
+									stiffness: 20,
 								},
 								borderColor: {
 									delay: done ? ind * 0.5 : 0,

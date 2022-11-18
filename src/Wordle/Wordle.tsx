@@ -105,22 +105,24 @@ const Wordle = () => {
 		fun();
 	}, [guessArray]);
 	return (
-		<div className="flex flex-col gap-[.35rem] mt-8">
+		<div className="flex flex-col gap-16">
 			{/* <div className="">word: {word}</div> */}
-			{row.map((e, i) => (
-				<Row
-					win={win}
-					setWin={setWin}
-					word={word}
-					rowkey={i}
-					key={i}
-					arr={rowArray[i]}
-					results={results}
-					currRow={currentRow}
-					guessArr={guessArray}
-				/>
-			))}
-			<div className="bottom-0 left-[50%] translate-x-[-50%] absolute">
+			<div className="flex items-center flex-col gap-[.35rem] mt-8">
+				{row.map((e, i) => (
+					<Row
+						win={win}
+						setWin={setWin}
+						word={word}
+						rowkey={i}
+						key={i}
+						arr={rowArray[i]}
+						results={results}
+						currRow={currentRow}
+						guessArr={guessArray}
+					/>
+				))}
+			</div>
+			<div className=" ">
 				{keys.map((e) => {
 					return (
 						<div className="flex gap-1 mb-2 justify-center items-center">
