@@ -26,7 +26,7 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 							key={ind}
 							initial={{ backgroundColor: "rgb(255,255,255)" }}
 							animate={{
-								scale: e !== "" ? [1, 1.03, 1] : 1,
+								scale: e !== "" ? [1, 1.1, 1] : 1,
 								scaleY: results[rowkey] ? (done ? [1, -1] : 1) : 1,
 								borderWidth: done ? ["2px", "0px"] : "2px",
 								borderColor: done
