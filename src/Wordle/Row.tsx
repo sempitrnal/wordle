@@ -26,9 +26,9 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 							key={ind}
 							initial={{ backgroundColor: "rgb(255,255,255)" }}
 							animate={{
-								scale: e !== "" ? [1, 1.07, 1] : 1,
+								scale: e !== "" ? [1, 1.03, 1] : 1,
 								scaleY: results[rowkey] ? (done ? [1, -1] : 1) : 1,
-								borderWidth: done ? "0" : "2px",
+								borderWidth: done ? "0px" : "2px",
 								borderColor: done
 									? ""
 									: e !== ""
@@ -45,11 +45,8 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 							}}
 							transition={{
 								scale: {
-									duration: 0.2,
+									duration: 0.1,
 									delay: 0,
-									type: "spring",
-									damping: 50,
-									stiffness: 10,
 								},
 								borderWidth: {
 									delay: done ? ind * 0.5 : 0,
@@ -63,7 +60,7 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 								delay: ind * 0.4,
 								duration: 0.5,
 							}}
-							className={`w-16 h-16  flex justify-center items-center ${
+							className={`w-[3.5rem] h-[3.5rem]  flex justify-center items-center ${
 								!done
 									? e !== ""
 										? "border-[#bfbfbf] border-[1.5px]"

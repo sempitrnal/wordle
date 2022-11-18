@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Row from "./Row";
 import dic from "./dic.json";
+import { keys } from "./keys";
 const Wordle = () => {
 	const words = Object.keys(dic).filter((e) => e.length === 5);
 
@@ -104,7 +105,7 @@ const Wordle = () => {
 		fun();
 	}, [guessArray]);
 	return (
-		<div className="flex flex-col gap-[.35rem]">
+		<div className="flex flex-col gap-[.35rem] mt-8">
 			{/* <div className="">word: {word}</div> */}
 			{row.map((e, i) => (
 				<Row
@@ -119,6 +120,30 @@ const Wordle = () => {
 					guessArr={guessArray}
 				/>
 			))}
+			<div className="bottom-0 left-[50%] translate-x-[-50%] absolute">
+				{keys.map((e) => {
+					return (
+						<div className="flex gap-1 mb-2 justify-center items-center">
+							{e.map((e, i) => (
+								<div
+									key={i}
+									className={`text-white h-[3.5rem] uppercase  ${
+										e.key === "⌫" ? "text-3xl " : "text-[.9rem] font-extrabold"
+									} rounded-md ${
+										e.key === "enter"
+											? "w-[4.5rem]"
+											: e.key === "⌫"
+											? "w-16"
+											: " w-11"
+									} bg-[#979797] flex justify-center items-center	 cursor-pointer hover:bg-[#898989]  transition`}
+								>
+									{e.key}
+								</div>
+							))}
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 };
