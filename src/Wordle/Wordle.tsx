@@ -12,7 +12,7 @@ function Wordle(): JSX.Element {
 
 	//word to be guessed
 	const [word, setWord] = useState(
-		words[Math.floor(Math.random() * words.length)]
+		"error" // words[Math.floor(Math.random() * words.length)]
 	);
 	// keys
 	const [keys, setKeys] = useState(keyboard);
@@ -55,6 +55,7 @@ function Wordle(): JSX.Element {
 	};
 	console.log(word);
 	const enter = () => {
+		console.log(words.includes(guessArray.join("")));
 		if (guessArray.every((e) => e !== "")) {
 			if (words.includes(guessArray.join(""))) {
 				setProcessing(true);
@@ -65,9 +66,12 @@ function Wordle(): JSX.Element {
 					if (word.includes(e)) {
 						if (findDuplicates(guessArray, e)[0] === e) {
 							if (
-								existing(guessArray, e, ind) &&
-								word.charAt(ind) !== e &&
-								findDuplicates(word.split(""), e)[0] !== e
+								(existing(guessArray, e, ind) &&
+									word.charAt(ind) !== e &&
+									findDuplicates(word.split(""), e)[0] !== e) ||
+								(!existing(guessArray, e, ind) &&
+									word.charAt(ind) !== e &&
+									findDuplicates(word.split(""), e)[0] === e)
 							) {
 								return "sayop";
 							} else if (
