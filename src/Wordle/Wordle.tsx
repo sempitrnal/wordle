@@ -3,7 +3,7 @@ import Row from "./Row";
 import dic from "./dic.json";
 import { keyboard } from "./keys";
 import { AnimatePresence, motion } from "framer-motion";
-
+import { IoClose } from "react-icons/io5";
 function Wordle(): JSX.Element {
 	const words = Object.keys(dic).filter((e) => e.length === 5);
 
@@ -42,17 +42,41 @@ function Wordle(): JSX.Element {
 
 	//if enter pressed error handler
 	const [error, setError] = useState<string>("");
+	// ambowt
+	let findDuplicates = (arr: any[], letter: string) =>
+		arr.filter((item, index) => arr.indexOf(item) !== index && item === letter);
+	let existing = (arr: string[], letter: string, index: number) => {
+		let res = false;
 
+		for (let i = 0; i < index; i++) {
+			if (arr[i] === letter) res = true;
+		}
+		return res;
+	};
+	console.log(word);
 	const enter = () => {
 		if (guessArray.every((e) => e !== "")) {
 			if (words.includes(guessArray.join(""))) {
 				setProcessing(true);
 				setTimeout(() => {
 					setProcessing(false);
-				}, 2500);
+				}, 2300);
 				let oten: string[] = guessArray.map((e, ind) => {
 					if (word.includes(e)) {
-						if (word.charAt(ind) === e) return "korek";
+						if (findDuplicates(guessArray, e)[0] === e) {
+							if (
+								existing(guessArray, e, ind) &&
+								word.charAt(ind) !== e &&
+								findDuplicates(word.split(""), e)[0] !== e
+							) {
+								return "sayop";
+							} else if (
+								(existing(guessArray, e, ind) && word.charAt(ind) === e) ||
+								(!existing(guessArray, e, ind) && word.charAt(ind) === e)
+							) {
+								return "korek";
+							} else return "sayop_place";
+						} else if (word.charAt(ind) === e) return "korek";
 						else return "sayop_place";
 					} else return "sayop";
 				});
@@ -77,8 +101,12 @@ function Wordle(): JSX.Element {
 				console.log(keyObj);
 				setTimeout(() => {
 					setKeys(keyObj);
-				}, 2500);
-				if (oten.every((e) => e === "korek")) setWin(true);
+				}, 2300);
+				console.log(oten.every((e) => e === "korek"));
+				if (oten.every((e) => e === "korek"))
+					setTimeout(() => {
+						setWin(true);
+					}, 2700);
 				setCurrentRow(currentRow + 1);
 				setCurrentIndex(0);
 				setGuessArray(col.map((e) => ""));
@@ -161,10 +189,59 @@ function Wordle(): JSX.Element {
 	useEffect(() => {
 		fun();
 	}, [guessArray]);
-	console.log(word);
+
 	return (
 		<div className="flex flex-col h-max justify-between gap-7">
 			{/* <div className="">word: {word}</div> */}
+			<AnimatePresence>
+				{win && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{
+							opacity: 1,
+							transition: { delay: 0.2, ease: "easeInOut", duration: 0.5 },
+						}}
+						onClick={() => {
+							setWin(false);
+						}}
+						exit={{ opacity: 0 }}
+						className="fixed top-0 left-0 bg-[#0000006a] w-screen h-screen z-50 flex justify-center items-center"
+					>
+						<motion.div
+							initial={{ opacity: 0, scale: 0.4 }}
+							animate={{
+								opacity: 1,
+								scale: 1,
+								transition: {
+									delay: 0.2,
+									scale: { type: "spring", damping: 20, stiffness: 120 },
+								},
+							}}
+							exit={{
+								opacity: 0,
+								scale: 0.4,
+								transition: {
+									scale: { duration: 0.65 },
+								},
+							}}
+							onClick={(e) => {
+								e.stopPropagation();
+							}}
+							className="w-[40rem] mx-10 h-[30rem] p-10 flex justify-center items-center  rounded-lg bg-white relative"
+						>
+							<div
+								onClick={() => {
+									setWin(false);
+								}}
+								className="absolute top-5 right-5 text-4xl cursor-pointer hover:text-[#333] transition"
+							>
+								<IoClose />
+							</div>
+							<div className=" text-5xl">You won!!!</div>
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 			<AnimatePresence>
 				{error && (
 					<motion.div
@@ -180,7 +257,7 @@ function Wordle(): JSX.Element {
 							y: -20,
 							transition: { delay: 1, y: { duration: 0.5 } },
 						}}
-						className="absolute left-[50%] translate-x-[-50%] px-5 py-4 flex justify-center items-center z-50 bg-[#333] text-white rounded-lg shadow-lg text-sm font-semibold"
+						className="absolute left-[50%] translate-x-[-50%] px-5 py-4 flex justify-center items-center z-50 bg-[#333] text-white rounded-lg shadow-lg text-sm font-extrabold"
 					>
 						<p>
 							{error === "not_in_list" ? "Not in list!" : "Not enough letters!"}
@@ -205,18 +282,24 @@ function Wordle(): JSX.Element {
 				))}
 			</div>
 			<div className=" ">
-				{keys.map((e) => {
+				{keys.map((e, i) => {
 					return (
-						<div className="flex gap-[.35rem] mb-2 justify-center items-center">
+						<div
+							key={i}
+							className="flex gap-[.35rem] mb-2 justify-center items-center"
+						>
 							{e.map((e, i) => (
 								<div
 									onClick={() => {
-										if (e.key !== "enter" && e.key !== "⌫") {
-											add(e);
-										} else if (e.key === "⌫") {
-											backspace();
-										} else if (e.key === "enter") {
-											enter();
+										if (processing) {
+										} else {
+											if (e.key !== "enter" && e.key !== "⌫") {
+												add(e);
+											} else if (e.key === "⌫") {
+												backspace();
+											} else if (e.key === "enter") {
+												enter();
+											}
 										}
 									}}
 									key={i}

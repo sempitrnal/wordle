@@ -40,9 +40,8 @@ const Row = ({
 				// console.log(res.every((e) => e === "korek") && currRow === i);
 
 				return (
-					<motion.div className="relative">
+					<motion.div key={ind} className="relative">
 						<motion.div
-							key={ind}
 							initial={{ backgroundColor: "rgb(255,255,255)" }}
 							animate={{
 								scale: e !== "" ? [1, 1.1, 1] : 1,
