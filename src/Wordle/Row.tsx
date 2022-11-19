@@ -9,19 +9,38 @@ type array = {
 	win: boolean;
 	setWin: Dispatch<SetStateAction<boolean>>;
 	results: string[][];
+	error: string;
 };
-const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
+const Row = ({
+	arr,
+	currRow,
+	rowkey,
+	word,
+	win,
+	setWin,
+	results,
+	error,
+}: array) => {
 	// green hex 6BAA64
 	// yellow hex CAB458
 	// grey hex 787C7E
 	const done = results[rowkey].length === 5;
 	return (
-		<motion.div className="flex gap-[.35rem]">
+		<motion.div
+			animate={{
+				x: rowkey === currRow && error ? [5, -5, 5, -5, 5, -5, 5, 0] : 0,
+			}}
+			transition={{
+				duration: 0.3,
+				ease: "easeInOut",
+			}}
+			className="flex gap-[.35rem]"
+		>
 			{arr.map((e, ind) => {
 				// console.log(res.every((e) => e === "korek") && currRow === i);
 
 				return (
-					<div className="relative">
+					<motion.div className="relative">
 						<motion.div
 							key={ind}
 							initial={{ backgroundColor: "rgb(255,255,255)" }}
@@ -94,7 +113,7 @@ const Row = ({ arr, currRow, rowkey, word, win, setWin, results }: array) => {
 						>
 							{e}
 						</motion.p>
-					</div>
+					</motion.div>
 				);
 			})}
 		</motion.div>
