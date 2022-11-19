@@ -163,7 +163,7 @@ function Wordle(): JSX.Element {
 	}, [guessArray]);
 	console.log(word);
 	return (
-		<div className="flex flex-col h-[80vh] justify-between">
+		<div className="flex flex-col h-max justify-between gap-7">
 			{/* <div className="">word: {word}</div> */}
 			<AnimatePresence>
 				{error && (
