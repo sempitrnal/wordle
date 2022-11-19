@@ -159,7 +159,7 @@ const Wordle = () => {
 			<div className=" ">
 				{keys.map((e) => {
 					return (
-						<div className="flex gap-1 mb-2 justify-center items-center">
+						<div className="flex gap-[.35rem] mb-2 justify-center items-center">
 							{e.map((e, i) => (
 								<div
 									onClick={() => {
@@ -178,9 +178,9 @@ const Wordle = () => {
 											: "text-[.7rem] lg:text-[.9rem] font-extrabold"
 									} rounded-md ${
 										e.key === "enter"
-											? "w-[4.5rem] text-[.75rem]"
+											? "lg:w-[4.5rem] w-[3.75rem] text-[.75rem]"
 											: e.key === "⌫"
-											? "w-16"
+											? "lg:w-16 w-[3.25rem]"
 											: "w-8 lg:w-11"
 									} bg-[#D4D6DA] flex justify-center items-center	 cursor-pointer hover:bg-[#bec1c6]  transition`}
 								>
