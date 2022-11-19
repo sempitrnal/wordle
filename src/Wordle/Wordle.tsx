@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Row from "./Row";
 import dic from "./dic.json";
 import { keys } from "./keys";
-const Wordle = () => {
+import { AnimatePresence, motion } from "framer-motion";
+
+function Wordle(): JSX.Element {
 	const words = Object.keys(dic).filter((e) => e.length === 5);
 
 	const row = Array.from(Array(6).keys());
@@ -41,8 +43,8 @@ const Wordle = () => {
 	const [error, setError] = useState<string>("");
 
 	const enter = () => {
-		if (words.includes(guessArray.join(""))) {
-			if (guessArray.every((e) => e !== "")) {
+		if (guessArray.every((e) => e !== "")) {
+			if (words.includes(guessArray.join(""))) {
 				setProcessing(true);
 				setTimeout(() => {
 					setProcessing(false);
@@ -63,9 +65,14 @@ const Wordle = () => {
 				setCurrentRow(currentRow + 1);
 				setCurrentIndex(0);
 				setGuessArray(col.map((e) => ""));
+			} else {
+				setError("not_in_list");
+				setTimeout(() => {
+					setError("");
+				}, 300);
 			}
 		} else {
-			setError("not_in_list");
+			setError("not_enough");
 			setTimeout(() => {
 				setError("");
 			}, 300);
@@ -140,6 +147,29 @@ const Wordle = () => {
 	return (
 		<div className="flex flex-col h-[73vh] lg:h-[83vh] justify-between">
 			{/* <div className="">word: {word}</div> */}
+			<AnimatePresence>
+				{error && (
+					<motion.div
+						initial={{ opacity: 0, y: -20, x: "-50%" }}
+						animate={{
+							y: -30,
+							x: "-50%",
+							opacity: 1,
+							transition: { y: { duration: 0.5 }, opacity: { duration: 0.2 } },
+						}}
+						exit={{
+							opacity: 0,
+							y: -20,
+							transition: { delay: 1, y: { duration: 0.5 } },
+						}}
+						className="absolute left-[50%] translate-x-[-50%] px-5 py-4 flex justify-center items-center z-50 bg-[#333] text-white rounded-lg shadow-lg text-sm font-semibold"
+					>
+						<p>
+							{error === "not_in_list" ? "Not in list!" : "Not enough letters!"}
+						</p>
+					</motion.div>
+				)}
+			</AnimatePresence>
 			<div className="flex items-center flex-col gap-[.35rem] mt-8">
 				{row.map((e, i) => (
 					<Row
@@ -193,6 +223,6 @@ const Wordle = () => {
 			</div>
 		</div>
 	);
-};
+}
 
 export default Wordle;
