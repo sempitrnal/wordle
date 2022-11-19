@@ -49,7 +49,7 @@ const Row = ({
 								scaleY: results[rowkey] ? (done ? [1, -1] : 1) : 1,
 								borderWidth: done ? ["2px", "0px"] : "2px",
 								borderColor: done
-									? ""
+									? "rgba(0,0,0,0)"
 									: e !== ""
 									? "rgb(191,191,191)"
 									: "rgb(228,228,228)",

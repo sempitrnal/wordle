@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Row from "./Row";
 import dic from "./dic.json";
-import { keys } from "./keys";
+import { keyboard } from "./keys";
 import { AnimatePresence, motion } from "framer-motion";
 
 function Wordle(): JSX.Element {
@@ -14,7 +14,8 @@ function Wordle(): JSX.Element {
 	const [word, setWord] = useState(
 		words[Math.floor(Math.random() * words.length)]
 	);
-
+	// keys
+	const [keys, setKeys] = useState(keyboard);
 	// col array
 	const [arr, setArr] = useState<string[]>(col.map((e) => ""));
 
@@ -61,6 +62,22 @@ function Wordle(): JSX.Element {
 					} else return e;
 				});
 				setResults(newobj);
+				let keyObj = keys.map((arr) =>
+					arr.map((e) => {
+						if (guessArray.includes(e.key)) {
+							return {
+								...e,
+								result: oten[guessArray.findIndex((key) => key === e.key)],
+							};
+						} else return e;
+					})
+				);
+				console.log(guessArray);
+				console.log(oten);
+				console.log(keyObj);
+				setTimeout(() => {
+					setKeys(keyObj);
+				}, 2500);
 				if (oten.every((e) => e === "korek")) setWin(true);
 				setCurrentRow(currentRow + 1);
 				setCurrentIndex(0);
@@ -144,6 +161,7 @@ function Wordle(): JSX.Element {
 	useEffect(() => {
 		fun();
 	}, [guessArray]);
+	console.log(word);
 	return (
 		<div className="flex flex-col h-[73vh] lg:h-[83vh] justify-between">
 			{/* <div className="">word: {word}</div> */}
@@ -202,7 +220,7 @@ function Wordle(): JSX.Element {
 										}
 									}}
 									key={i}
-									className={`text-black h-[3rem] lg:h-[3.5rem] uppercase  ${
+									className={` h-[3rem] lg:h-[3.5rem] uppercase  ${
 										e.key === "⌫"
 											? "text-2xl "
 											: "text-[.7rem] lg:text-[.9rem] font-extrabold"
@@ -212,7 +230,15 @@ function Wordle(): JSX.Element {
 											: e.key === "⌫"
 											? "lg:w-16 w-[3.25rem]"
 											: "w-8 lg:w-11"
-									} bg-[#D4D6DA] flex justify-center items-center	 cursor-pointer hover:bg-[#bec1c6]  transition`}
+									}  flex justify-center items-center	 cursor-pointer ${
+										e.result
+											? e.result === "sayop"
+												? "bg-[#787C7E] text-white"
+												: e.result === "sayop_place"
+												? "bg-[#CAB458] text-white"
+												: "bg-[#6BAA64] text-white"
+											: "bg-[#D4D6DA]"
+									} transition`}
 								>
 									{e.key}
 								</div>
