@@ -138,7 +138,7 @@ const Wordle = () => {
 		fun();
 	}, [guessArray]);
 	return (
-		<div className="flex flex-col h-[83vh] justify-between gap-16">
+		<div className="flex flex-col h-[78vh] lg:h-[83vh] justify-between gap-16">
 			{/* <div className="">word: {word}</div> */}
 			<div className="flex items-center flex-col gap-[.35rem] mt-8">
 				{row.map((e, i) => (
