@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Row from "./Row";
-import dic from "./dic.json";
+
+import words5 from "./words5.json";
+import words55 from "./words-4.json";
 import { keyboard } from "./keys";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 function Wordle(): JSX.Element {
-	const words = Object.keys(dic).filter((e) => e.length === 5);
+	const words = words5.map((e) => e.word);
 
 	const row = Array.from(Array(6).keys());
 	const col = Array.from(Array(5).keys());
 
 	//word to be guessed
 	const [word, setWord] = useState(
-		"error" // words[Math.floor(Math.random() * words.length)]
+		words[Math.floor(Math.random() * words.length)]
 	);
 	// keys
 	const [keys, setKeys] = useState(keyboard);
@@ -64,20 +66,9 @@ function Wordle(): JSX.Element {
 		return res;
 	};
 
-	// useEffect(() => {
-	// 	console.log(currentRow);
-	// 	if (
-	// 		results[currentRow].length !== 0 &&
-	// 		results[currentRow].every((e) => e === "korek")
-	// 	) {
-
-	// 	} else if (results.every((e) => e.length === 5))
-	// 		setTimeout(() => {
-	// 			setLose(true);
-	// 		}, 2700);
-	// }, [results, currentRow, win]);
 	const enter = () => {
 		// console.log(words.includes(guessArray.join("")));
+
 		if (guessArray.every((e) => e !== "")) {
 			if (words.includes(guessArray.join(""))) {
 				setProcessing(true);
@@ -91,7 +82,10 @@ function Wordle(): JSX.Element {
 									findDuplicates(word.split(""), e)[0] !== e) ||
 								(!existing(guessArray, e, ind) &&
 									word.charAt(ind) !== e &&
-									findDuplicates(word.split(""), e)[0] === e)
+									findDuplicates(word.split(""), e)[0] === e) ||
+								(!existing(guessArray, e, ind) &&
+									word.charAt(ind) !== e &&
+									findDuplicates(word.split(""), e)[0] !== e)
 							) {
 								return "sayop";
 							} else if (
