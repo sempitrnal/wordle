@@ -25,6 +25,8 @@ function Wordle(): JSX.Element {
 	// if guessed set this to true
 	const [win, setWin] = useState<boolean>(false);
 
+	const [lose, setLose] = useState<boolean>(false);
+
 	// enter pressed, animation starts, disable event for performance purposes
 	const [processing, setProcessing] = useState<boolean>(false);
 
@@ -38,7 +40,15 @@ function Wordle(): JSX.Element {
 	const [guessArray, setGuessArray] = useState<string[]>(col.map((e) => ""));
 
 	// results array
-	const [results, setResults] = useState<string[][]>([[], [], [], [], [], []]);
+	const [results, setResults] = useState<string[][]>([
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+	]);
 
 	//if enter pressed error handler
 	const [error, setError] = useState<string>("");
@@ -53,15 +63,25 @@ function Wordle(): JSX.Element {
 		}
 		return res;
 	};
-	console.log(word);
+
+	// useEffect(() => {
+	// 	console.log(currentRow);
+	// 	if (
+	// 		results[currentRow].length !== 0 &&
+	// 		results[currentRow].every((e) => e === "korek")
+	// 	) {
+
+	// 	} else if (results.every((e) => e.length === 5))
+	// 		setTimeout(() => {
+	// 			setLose(true);
+	// 		}, 2700);
+	// }, [results, currentRow, win]);
 	const enter = () => {
-		console.log(words.includes(guessArray.join("")));
+		// console.log(words.includes(guessArray.join("")));
 		if (guessArray.every((e) => e !== "")) {
 			if (words.includes(guessArray.join(""))) {
 				setProcessing(true);
-				setTimeout(() => {
-					setProcessing(false);
-				}, 2300);
+
 				let oten: string[] = guessArray.map((e, ind) => {
 					if (word.includes(e)) {
 						if (findDuplicates(guessArray, e)[0] === e) {
@@ -84,6 +104,22 @@ function Wordle(): JSX.Element {
 						else return "sayop_place";
 					} else return "sayop";
 				});
+				if (oten.every((e) => e === "korek")) {
+					setTimeout(() => {
+						setWin(true);
+					}, 2700);
+				} else if (
+					oten.every((e) => e !== "korek") &&
+					currentRow === row.length - 1
+				) {
+					setTimeout(() => {
+						setLose(true);
+					}, 2700);
+				} else {
+					setTimeout(() => {
+						setProcessing(false);
+					}, 2300);
+				}
 				let newobj = results.map((e, i) => {
 					if (i === currentRow) {
 						return oten;
@@ -106,11 +142,9 @@ function Wordle(): JSX.Element {
 				setTimeout(() => {
 					setKeys(keyObj);
 				}, 2300);
-				console.log(oten.every((e) => e === "korek"));
-				if (oten.every((e) => e === "korek"))
-					setTimeout(() => {
-						setWin(true);
-					}, 2700);
+
+				// console.log(oten.every((e) => e === "korek"));
+
 				setCurrentRow(currentRow + 1);
 				setCurrentIndex(0);
 				setGuessArray(col.map((e) => ""));
@@ -198,7 +232,7 @@ function Wordle(): JSX.Element {
 		<div className="flex flex-col h-max justify-between gap-7">
 			{/* <div className="">word: {word}</div> */}
 			<AnimatePresence>
-				{win && (
+				{(win || lose) && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{
@@ -206,7 +240,7 @@ function Wordle(): JSX.Element {
 							transition: { delay: 0.2, ease: "easeInOut", duration: 0.5 },
 						}}
 						onClick={() => {
-							setWin(false);
+							win ? setWin(false) : setLose(false);
 						}}
 						exit={{ opacity: 0 }}
 						className="fixed top-0 left-0 bg-[#0000006a] w-screen h-screen z-50 flex justify-center items-center"
@@ -235,13 +269,15 @@ function Wordle(): JSX.Element {
 						>
 							<div
 								onClick={() => {
-									setWin(false);
+									win ? setWin(false) : setLose(false);
 								}}
 								className="absolute top-5 right-5 text-4xl cursor-pointer hover:text-[#333] transition"
 							>
 								<IoClose />
 							</div>
-							<div className=" text-5xl">You won!!!</div>
+							<div className=" text-5xl">
+								{win ? "You won!!!" : lose ? "Better luck next toime :(" : ""}
+							</div>
 						</motion.div>
 					</motion.div>
 				)}
@@ -270,20 +306,22 @@ function Wordle(): JSX.Element {
 				)}
 			</AnimatePresence>
 			<div className="flex items-center flex-col gap-[.35rem] mt-8">
-				{row.map((e, i) => (
-					<Row
-						error={error}
-						win={win}
-						setWin={setWin}
-						word={word}
-						rowkey={i}
-						key={i}
-						arr={rowArray[i]}
-						results={results}
-						currRow={currentRow}
-						guessArr={guessArray}
-					/>
-				))}
+				{row.map((e, i) => {
+					return (
+						<Row
+							error={error}
+							win={win}
+							setWin={setWin}
+							word={word}
+							rowkey={i}
+							key={i}
+							arr={rowArray[i]}
+							results={results}
+							currRow={currentRow}
+							guessArr={guessArray}
+						/>
+					);
+				})}
 			</div>
 			<div className=" ">
 				{keys.map((e, i) => {

@@ -67,7 +67,7 @@ const Row = ({
 									delay: 0,
 								},
 								borderWidth: {
-									delay: done ? ind * 0.5 : 0,
+									delay: done ? ind * 0.4 : 0,
 									duration: 0.09,
 									ease: "linear",
 									type: "spring",
@@ -75,7 +75,7 @@ const Row = ({
 									stiffness: 20,
 								},
 								borderColor: {
-									delay: done ? ind * 0.5 : 0,
+									delay: done ? ind * 0.4 : 0,
 									duration: 0,
 								},
 								delay: ind * 0.4,
@@ -93,7 +93,7 @@ const Row = ({
 							className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[2.3rem]  uppercase font-extrabold`}
 							animate={{
 								color: done ? "rgb(255,255,255)" : "rgba(0,0,0)",
-								scaleY: done ? [1, 0.7, 1] : 1,
+								scaleY: done ? [1, 0.4, 1] : 1,
 								translateX: "-50%",
 								translateY: "-50%",
 							}}
