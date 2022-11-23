@@ -130,9 +130,7 @@ function Wordle(): JSX.Element {
 						} else return e;
 					})
 				);
-				console.log(guessArray);
-				console.log(oten);
-				console.log(keyObj);
+
 				setTimeout(() => {
 					setKeys(keyObj);
 				}, 2300);
@@ -223,7 +221,7 @@ function Wordle(): JSX.Element {
 	}, [guessArray]);
 
 	return (
-		<div className="flex flex-col h-max justify-between gap-7">
+		<div className="flex flex-col justify-between h-max gap-7">
 			{/* <div className="">word: {word}</div> */}
 			<AnimatePresence>
 				{(win || lose) && (
@@ -259,7 +257,7 @@ function Wordle(): JSX.Element {
 							onClick={(e) => {
 								e.stopPropagation();
 							}}
-							className="w-[40rem] mx-10 h-[30rem] p-10 flex justify-center items-center  rounded-lg bg-white relative"
+							className="w-[40rem] mx-10 h-[30rem] p-10 flex flex-col justify-center items-center  rounded-lg bg-white relative"
 						>
 							<div
 								onClick={() => {
@@ -269,8 +267,18 @@ function Wordle(): JSX.Element {
 							>
 								<IoClose />
 							</div>
-							<div className=" text-5xl">
+							<div className="text-5xl ">
 								{win ? "You won!!!" : lose ? "Better luck next toime :(" : ""}
+							</div>
+							{lose && (
+								<div className="mt-8 text-2xl">
+									The word was{" "}
+									<span className="font-black uppercase">{word}</span> bogo
+								</div>
+							)}
+							{lose && <div className="mt-10">👎👎👎👎👎👎 noob</div>}
+							<div className="mt-10">
+								refresh to start a new game kay kapoy pag code yawa
 							</div>
 						</motion.div>
 					</motion.div>
@@ -317,7 +325,7 @@ function Wordle(): JSX.Element {
 					);
 				})}
 			</div>
-			<div className=" ">
+			<div className="">
 				{keys.map((e, i) => {
 					return (
 						<div
