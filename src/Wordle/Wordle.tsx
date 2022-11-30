@@ -17,6 +17,8 @@ function Wordle(): JSX.Element {
 		words[Math.floor(Math.random() * words.length)]
 	);
 	// keys
+
+	console.log(word);
 	const [keys, setKeys] = useState(keyboard);
 	// col array
 	const [arr, setArr] = useState<string[]>(col.map((e) => ""));
@@ -98,17 +100,18 @@ function Wordle(): JSX.Element {
 						else return "sayop_place";
 					} else return "sayop";
 				});
+
 				if (oten.every((e) => e === "korek")) {
 					setTimeout(() => {
 						setWin(true);
-					}, 2700);
+					}, 2300);
 				} else if (
-					oten.every((e) => e !== "korek") &&
+					oten.filter((e) => e !== "korek").length > 0 &&
 					currentRow === row.length - 1
 				) {
 					setTimeout(() => {
 						setLose(true);
-					}, 2700);
+					}, 2300);
 				} else {
 					setTimeout(() => {
 						setProcessing(false);
